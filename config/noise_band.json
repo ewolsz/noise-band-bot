@@ -1,0 +1,23 @@
+{
+  "paper": true,
+  "symbol": "QQQ",
+  "range_minutes": 15,
+  "lookback_sessions": 20,
+  "band_multiplier": 1.25,
+  "room_fraction_of_range": 0.25,
+  "first_check": "10:00",
+  "last_check": "14:00",
+  "check_every_minutes": 10,
+  "trail_giveback": 0.5,
+  "flat_at": "15:45",
+
+  "option": {
+    "expiry": "next trading day (as in the video: Friday's trade used Monday's options)",
+    "strike": "nearest listed strike to QQQ's price at the signal",
+    "budget_pct_of_equity": 0.20,
+    "one_contract_allowed_up_to_pct": 0.25,
+    "max_contracts": 10,
+    "max_spread_pct": 0.15
+  },
+  "note": "Do not change settings while the paper test is running. If they must change, end the test, say so, and start the count again."
+}
