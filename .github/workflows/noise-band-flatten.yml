@@ -1,0 +1,36 @@
+name: Noise band flatten
+
+# Backup only. The session normally sells by itself at 3:45 PM. This sells
+# anything the bot still holds a few minutes later, in case the session died.
+# Before 3:45 PM New York it does nothing (the wrong-season slot is harmless).
+on:
+  schedule:
+    - cron: "50 19 * * 1-5"   # 3:50 PM New York in summer
+    - cron: "50 20 * * 1-5"   # 3:50 PM New York in winter
+  workflow_dispatch:
+    inputs:
+      now:
+        description: "Sell the bot's option right now instead of waiting for 3:45 PM"
+        type: boolean
+        default: false
+
+concurrency:
+  group: noise-band-flatten
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  flatten:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Flatten
+        env:
+          ALPACA_KEY: ${{ secrets.ALPACA_KEY }}
+          ALPACA_SECRET: ${{ secrets.ALPACA_SECRET }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          NOW: ${{ inputs.now && '--now' || '' }}
+        run: python3 bot/noise_band_bot.py flatten $NOW
